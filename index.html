@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Tanush Gupta</title>
+<meta name="description" content="Tanush Gupta's portfolio, told as a manga in four chapters: who he is, what he has built, and where he is headed next.">
+<meta name="theme-color" content="#121214">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tanush Gupta">
+<meta property="og:description" content="A portfolio told as a manga in four chapters.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=DotGothic16&family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap">
+<style>
+[hidden]{display:none!important}
+img{max-width:100%}
+/* Layout concept: a manga reader. One white page at a time on a dark desk, each page a grid of ruled panels, chapters turn like pages. Single look by choice: pure black and white. */
+:root{
+  color-scheme:dark;
+  --ink:#0b0b0c;
+  --paper:#f3f3f0;
+  --desk:#121214;
+  --rule:#2b2b2e;
+  --dim:#9b9b97;
+  --display:"Dela Gothic One","Arial Black",Impact,sans-serif;
+  --body:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;
+  --label:"DotGothic16","Courier New",monospace;
+  --gutter:clamp(8px,1.4vw,14px);
+  --edge:4px;
+}
+*{box-sizing:border-box}
+html{background:var(--desk)}
+body{margin:0;background:var(--desk);color:var(--paper);font:400 16px/1.55 var(--body);padding-block:0 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--desk);border-bottom:2px solid var(--rule);display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:10px;max-width:1080px;margin:0 auto 18px}
+.mark{font:400 13px/1 var(--label);letter-spacing:.18em;text-transform:uppercase}
+.tabs{display:flex;gap:6px}
+.tab{appearance:none;border:2px solid var(--paper);background:transparent;color:var(--paper);font:400 13px/1 var(--label);letter-spacing:.08em;padding:8px 11px;min-height:36px;cursor:pointer;transition:background .15s,color .15s}
+.tab:hover{background:var(--rule)}
+.tab[aria-current="page"],.tab[aria-current="page"]:hover{background:var(--paper);color:var(--ink)}
+.tab:focus-visible{outline:3px dashed var(--paper);outline-offset:3px}
+.top{flex-wrap:wrap}
+.tabs{flex-wrap:wrap;justify-content:center}
+.stamp{display:inline-flex;align-items:center;min-height:36px;padding:8px 11px;border:2px solid var(--paper);background:var(--paper);color:var(--ink);font:400 13px/1 var(--label);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;transform:rotate(-2deg);transition:transform .15s}
+.stamp:hover{transform:rotate(0deg) translate(-2px,-2px)}
+.stamp:focus-visible{outline:3px dashed var(--paper);outline-offset:3px}
+
+/* stage and page */
+.stage{max-width:1080px;margin:0 auto;display:grid;perspective:2200px}
+.page{grid-area:1/1;min-width:0;background:var(--paper);color:var(--ink);padding:clamp(10px,2vw,20px);transform-origin:0 50%;box-shadow:0 0 0 2px #000,0 28px 70px rgba(0,0,0,.65);backface-visibility:hidden}
+.runhead{display:flex;justify-content:space-between;gap:12px;font:400 12px/1 var(--label);letter-spacing:.14em;text-transform:uppercase;padding:2px 2px 10px}
+
+/* panel grid */
+.panels{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:minmax(104px,auto);gap:var(--gutter)}
+.panel{position:relative;min-width:0;border:var(--edge) solid var(--ink);background:var(--paper);color:var(--ink);padding:clamp(14px,2.2vw,26px);display:flex;flex-direction:column;justify-content:center;gap:12px;overflow:hidden}
+.panel>*{position:relative;z-index:1}
+.c6{grid-column:span 6}.c4{grid-column:span 4}.c3{grid-column:span 3}.c2{grid-column:span 2}
+.r2{grid-row:span 2}.r3{grid-row:span 3}
+.dark{background:var(--ink);color:var(--paper)}
+.tone::before,.speed::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0}
+.tone::before{background:radial-gradient(circle at center,var(--ink) 0 1.1px,transparent 1.5px) 0 0/6px 6px;opacity:.15}
+.dark.tone::before{background:radial-gradient(circle at center,var(--paper) 0 1.1px,transparent 1.5px) 0 0/6px 6px;opacity:.2}
+.speed::before{background:repeating-conic-gradient(from 0deg at 50% 50%,var(--ink) 0 .7deg,transparent .7deg 3.6deg);-webkit-mask-image:radial-gradient(circle at 50% 50%,transparent 24%,#000 82%);mask-image:radial-gradient(circle at 50% 50%,transparent 24%,#000 82%);opacity:.85}
+
+/* chapter title panel */
+.title{min-height:clamp(190px,30vw,300px);justify-content:flex-end}
+.kicker{font:400 13px/1.2 var(--label);letter-spacing:.2em;text-transform:uppercase}
+.title h2{margin:0;font:400 clamp(30px,8.8vw,112px)/.88 var(--display);letter-spacing:-.01em;text-transform:uppercase;text-wrap:balance}
+.title .sub{max-width:46ch;margin:0;font-size:clamp(14px,1.6vw,17px)}
+.panel>.ghost{position:absolute;right:2%;bottom:-14%;font:400 clamp(180px,34vw,400px)/1 var(--display);color:transparent;-webkit-text-stroke:2px var(--paper);opacity:.28;pointer-events:none;z-index:0}
+.title:not(.dark) .ghost{-webkit-text-stroke-color:var(--ink);opacity:.2}
+
+/* manga devices */
+.bubble,.thought{background:#fff;color:var(--ink);border:3px solid var(--ink);border-radius:50%/38%;padding:clamp(18px,2.4vw,30px) clamp(20px,3vw,36px);text-align:center;font:900 clamp(16px,1.9vw,21px)/1.3 var(--body);position:relative;margin:0}
+.bubble{margin-bottom:20px}
+.bubble::after{content:"";position:absolute;left:24%;bottom:-13px;width:20px;height:20px;background:#fff;border-right:3px solid var(--ink);border-bottom:3px solid var(--ink);transform:rotate(45deg)}
+.thought{margin-bottom:40px;font-weight:700}
+.thought::before,.thought::after{content:"";position:absolute;background:#fff;border:3px solid var(--ink);border-radius:50%}
+.thought::before{left:22%;bottom:-22px;width:16px;height:16px}
+.thought::after{left:15%;bottom:-38px;width:9px;height:9px}
+.cap{align-self:flex-start;background:var(--paper);color:var(--ink);border:3px solid var(--ink);padding:7px 11px;font:400 12px/1.2 var(--label);letter-spacing:.1em;text-transform:uppercase}
+.narr{margin:0;border:3px solid currentColor;background:var(--paper);color:var(--ink);padding:12px 14px;font-size:clamp(14px,1.5vw,16.5px);box-shadow:5px 5px 0 var(--ink)}
+.dark .narr{background:var(--ink);color:var(--paper);box-shadow:5px 5px 0 var(--paper)}
+.panel>.sfx{position:absolute;right:14px;bottom:46px;font:400 clamp(48px,9vw,110px)/1 var(--display);transform:rotate(-7deg);color:var(--ink);text-shadow:3px 3px 0 var(--paper),-3px -3px 0 var(--paper),3px -3px 0 var(--paper),-3px 3px 0 var(--paper);pointer-events:none;z-index:2}
+.panel>.sfx.plain{bottom:12px}
+.h{margin:0;font:400 clamp(22px,3vw,36px)/1.05 var(--display);text-wrap:balance;overflow-wrap:break-word}
+@media (min-width:761px){.c2 .h{font-size:clamp(15px,2vw,24px)}}
+.panel p{margin:0}
+.panel p.body{font-size:clamp(14px,1.55vw,17px);max-width:60ch}
+.stat{font:400 clamp(80px,15vw,170px)/.85 var(--display);letter-spacing:-.03em}
+
+/* photo and hero slots */
+.slot{padding:0;min-height:300px;justify-content:flex-end;cursor:pointer}
+.slot>input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:3}
+.slot:focus-within{outline:3px dashed var(--ink);outline-offset:3px}
+.slot>img{display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;filter:grayscale(1) contrast(1.55) brightness(1.02)}
+.slot.has>img{display:block}
+.slot.has::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(circle at center,#000 0 1px,transparent 1.7px) 0 0/4px 4px;mix-blend-mode:multiply;opacity:.4}
+.slot.has>.hint,.slot.has>.ph,.slot.has::before{display:none}
+.slot.has{cursor:default}
+.slot.styled>img{filter:none}
+.slot.styled::after{content:none}
+.slot>.ph{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;pointer-events:none}
+.slot>.ph svg{height:78%;width:auto;fill:var(--ink)}
+.slot>.cap{position:absolute;top:12px;left:12px;max-width:calc(100% - 24px);z-index:2}
+.slot>.hint{position:absolute;left:0;right:0;bottom:0;z-index:2;background:var(--ink);color:var(--paper);font:400 11px/1.3 var(--label);letter-spacing:.12em;text-transform:uppercase;padding:9px 12px;pointer-events:none}
+
+/* strips, certs, tags, links */
+.panel.strip{padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0}
+.strip>div{padding:clamp(14px,2vw,22px);border-right:3px solid var(--ink);display:flex;flex-direction:column;justify-content:center;gap:6px}
+.strip>div:last-child{border-right:0}
+.strip b{font:400 clamp(18px,2.4vw,28px)/1 var(--display)}
+.strip span{font-size:14px}
+.certs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.cert{border:3px solid currentColor;padding:10px 12px;display:flex;flex-direction:column;gap:2px;font-weight:700;font-size:15px}
+.cert small{font:400 11px/1 var(--label);letter-spacing:.16em;text-transform:uppercase;opacity:.8}
+.cert.wide{grid-column:1/-1}
+.panel>.glimpse{position:absolute;inset:0;z-index:0;background-position:right center;background-size:cover;background-repeat:no-repeat;filter:grayscale(1) contrast(1.25);opacity:.13;pointer-events:none;-webkit-mask-image:linear-gradient(to left,#000 0%,rgba(0,0,0,.5) 30%,transparent 62%);mask-image:linear-gradient(to left,#000 0%,rgba(0,0,0,.5) 30%,transparent 62%);transition:opacity .3s}
+.panel.dark>.glimpse{filter:grayscale(1) contrast(1.2) brightness(1.5);opacity:.2}
+.panel:hover>.glimpse{opacity:.24}
+.panel.dark:hover>.glimpse{opacity:.32}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tags span{border:2px solid currentColor;padding:3px 7px;font:400 11px/1.1 var(--label);letter-spacing:.08em;text-transform:uppercase}
+.links{display:flex;flex-wrap:wrap;gap:8px 18px}
+.link{display:inline-block;align-self:flex-start;font:400 13px/1 var(--label);letter-spacing:.1em;text-transform:uppercase;color:inherit;text-decoration:none;border-bottom:3px solid currentColor;padding:3px 2px}
+.link:hover{background:var(--ink);color:var(--paper)}
+.dark .link:hover{background:var(--paper);color:var(--ink)}
+.link:focus-visible,.biglink:focus-visible{outline:3px dashed var(--ink);outline-offset:3px}
+.biglink{text-decoration:none;color:var(--paper);transition:transform .15s,box-shadow .15s}
+.biglink:hover{transform:translate(-3px,-3px);box-shadow:6px 6px 0 var(--ink)}
+.biglink b{font:400 clamp(30px,5vw,60px)/1 var(--display)}
+.biglink span.url{font:400 13px/1.2 var(--label);letter-spacing:.08em;overflow-wrap:anywhere}
+
+/* page navigation */
+.pagenav{display:flex;gap:var(--gutter);margin-top:var(--gutter)}
+.go{appearance:none;cursor:pointer;border:var(--edge) solid var(--ink);background:var(--ink);color:var(--paper);font:400 clamp(16px,2.2vw,22px)/1 var(--display);letter-spacing:.04em;padding:clamp(14px,2vw,20px) clamp(16px,3vw,30px);display:flex;align-items:center;justify-content:space-between;gap:16px;transition:transform .15s,box-shadow .15s,background .15s,color .15s}
+.go.next{flex:1}
+.go.prev{background:var(--paper);color:var(--ink)}
+.go small{font:400 12px/1 var(--label);letter-spacing:.2em}
+.go:hover{transform:translate(-3px,-3px);box-shadow:6px 6px 0 var(--ink)}
+.go.next:hover{background:var(--paper);color:var(--ink)}
+.go.prev:hover{background:var(--ink);color:var(--paper)}
+.go:focus-visible{outline:3px dashed var(--ink);outline-offset:4px}
+.foot{max-width:1080px;margin:18px auto 0;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 12px;font:400 12px/1.4 var(--label);letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+
+@media (max-width:760px){
+  .mark{display:none}
+  .top{justify-content:center}
+  .tab{padding:8px 9px}
+  .panels{grid-template-columns:1fr;grid-auto-rows:auto}
+  .c6,.c4,.c3,.c2{grid-column:1/-1}
+  .r2,.r3{grid-row:auto}
+  .slot{min-height:360px}
+  .panel.strip{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .strip>div:nth-child(2){border-right:0}
+  .strip>div:nth-child(-n+2){border-bottom:3px solid var(--ink)}
+  .pagenav{flex-direction:column-reverse}
+}
+@media (prefers-reduced-motion:reduce){
+  .tab,.go,.biglink{transition:none}
+}
+</style>
+
+<noscript><style>.stage{display:block}.page[hidden]{display:block!important;margin-top:24px}</style></noscript>
+
+</head>
+<body>
+<nav class="top" aria-label="Chapters">
+  <span class="mark">Tanush Gupta</span>
+  <div class="tabs">
+    <button class="tab" type="button" data-go="0" aria-current="page" title="Chapter 1: Origin">01</button>
+    <button class="tab" type="button" data-go="1" title="Chapter 2: Training Arc">02</button>
+    <button class="tab" type="button" data-go="2" title="Chapter 3: Creations">03</button>
+    <button class="tab" type="button" data-go="3" title="Chapter 4: Next Arc">04</button>
+    <button class="tab" type="button" data-go="4" title="Final chapter: Contact">END</button>
+  </div>
+  <a class="stamp" href="resume-tanush-gupta.pdf" target="_blank" rel="noopener">Resume ↗</a>
+</nav>
+
+<main class="stage">
+
+<!-- CHAPTER 1 -->
+<article class="page" id="ch1" aria-label="Chapter 1: Origin">
+  <div class="runhead"><span>Tanush Gupta · Ch.1 Origin</span><span>p. 1 / 5</span></div>
+  <div class="panels">
+    <header class="panel title dark tone c6">
+      <span class="ghost" aria-hidden="true">1</span>
+      <span class="kicker">Chapter 1 · <span lang="ja">第一話</span></span>
+      <h2>Origin</h2>
+      <p class="sub">Who I am, and how I think before I touch the keyboard.</p>
+    </header>
+
+    <div class="panel slot has styled speed c4 r3" data-kind="hero">
+      <span class="cap">Hyderabad. Late night. One more idea.</span>
+      <img src="img/hero1.jpg" alt="Tanush in a face mask, drawn in black and white manga ink" style="object-position:50% 38%">
+      <span class="sfx" aria-hidden="true" lang="ja">ドン</span>
+    </div>
+
+    <div class="panel tone c2"><p class="bubble">I'm Tanush.</p></div>
+    <div class="panel dark c2"><p class="narr">B.Tech in Computer Science, specialising in Cybersecurity. Class of 2026.</p></div>
+    <div class="panel c2"><p class="thought">I think in systems first. What breaks? Who uses it? What is the simplest version that works?</p></div>
+
+    <div class="panel strip c6">
+      <div><b>Manga</b><span>Reads it, then builds tools for it.</span></div>
+      <div><b>Games</b><span>Video games, card games, board games.</span></div>
+      <div><b>Cooking</b><span>Built an app to help with it.</span></div>
+      <div><b>Travel</b><span>Better in person than on a map.</span></div>
+    </div>
+
+    <div class="panel dark tone c6">
+      <p class="narr">I'm a product thinker more than a pure coder. I design the system and direct AI tools to build it. That is how I work, and this site is the story so far.</p>
+    </div>
+  </div>
+  <div class="pagenav">
+    <button class="go next" type="button" data-go="next"><small lang="ja">つづく</small><span>Next chapter</span><span aria-hidden="true">→</span></button>
+  </div>
+</article>
+
+<!-- CHAPTER 2 -->
+<article class="page" id="ch2" aria-label="Chapter 2: Training Arc" hidden>
+  <div class="runhead"><span>Tanush Gupta · Ch.2 Training Arc</span><span>p. 2 / 5</span></div>
+  <div class="panels">
+    <header class="panel title tone c6">
+      <span class="ghost" aria-hidden="true">2</span>
+      <span class="kicker">Chapter 2 · <span lang="ja">第二話</span></span>
+      <h2>Training arc</h2>
+      <p class="sub">Four years of foundations, then a first look at real systems.</p>
+    </header>
+
+    <div class="panel c3">
+      <span class="kicker">2022</span>
+      <h3 class="h">SRMIST, Kattankulathur</h3>
+      <p class="body">B.Tech in Computer Science, specialising in Cybersecurity. Four years, 2022 to 2026.</p>
+    </div>
+    <div class="panel dark tone c3">
+      <span class="stat">9.64</span>
+      <span class="kicker">CGPA out of 10</span>
+    </div>
+
+    <div class="panel slot has styled c3 r2" data-kind="photo">
+      <span class="cap">Class of 2026</span>
+      <img src="img/hero-ch2.jpg" alt="Tanush with glasses, seated and looking aside, drawn in black and white manga ink" style="object-position:50% 20%">
+    </div>
+    <div class="panel c3">
+      <span class="kicker">Jan to Mar 2026</span>
+      <h3 class="h">Ramco Systems</h3>
+      <p class="body">Enterprise ERP Division. I fixed a broken testing pipeline and cut the testing timeline by around 70%. I also built RESTful APIs for frontend ERP modules, plus a local API mock layer that let teams test in parallel without touching the production pipeline.</p>
+      <div class="tags"><span>Testing time down ~70%</span><span>REST APIs</span><span>API mocking</span></div>
+    </div>
+    <div class="panel dark c3">
+      <span class="kicker">Side quests</span>
+      <div class="certs">
+        <div class="cert wide"><small>Google · Coursera, 2024</small>Cybersecurity Certificate</div>
+        <div class="cert"><small>Cisco</small>Networking Fundamentals</div>
+        <div class="cert"><small>NPTEL</small>Computer Networks</div>
+        <div class="cert"><small>NPTEL</small>Computer Architecture</div>
+        <div class="cert"><small>NPTEL</small>Java</div>
+      </div>
+    </div>
+
+    <div class="panel tone c6"><p class="bubble">I like knowing what sits underneath.</p></div>
+  </div>
+  <div class="pagenav">
+    <button class="go prev" type="button" data-go="prev"><span aria-hidden="true">←</span><span>Back</span></button>
+    <button class="go next" type="button" data-go="next"><small lang="ja">つづく</small><span>Next chapter</span><span aria-hidden="true">→</span></button>
+  </div>
+</article>
+
+<!-- CHAPTER 3 -->
+<article class="page" id="ch3" aria-label="Chapter 3: Creations" hidden>
+  <div class="runhead"><span>Tanush Gupta · Ch.3 Creations</span><span>p. 3 / 5</span></div>
+  <div class="panels">
+    <header class="panel title dark tone c6">
+      <span class="ghost" aria-hidden="true">3</span>
+      <span class="kicker">Chapter 3 · <span lang="ja">第三話</span></span>
+      <h2>Creations</h2>
+      <p class="sub">Things I designed, shipped, and broke along the way.</p>
+    </header>
+
+    <div class="panel tone c4 r2">
+      <div class="glimpse" style="background-image:url('img/instatl.jpg')" aria-hidden="true"></div>
+      <span class="kicker">Android · Shipped</span>
+      <h3 class="h">InstaTL</h3>
+      <p class="body">A floating bubble you drag over any manga page. ML Kit OCR reads the text, DeepL translates it, and on-device translation steps in as a fallback.</p>
+      <div class="tags"><span>ML Kit OCR</span><span>DeepL</span><span>On-device fallback</span></div>
+    </div>
+    <div class="panel dark c2">
+      <div class="glimpse" style="background-image:url('img/expense.jpg')" aria-hidden="true"></div>
+      <span class="kicker">Android · Kotlin</span>
+      <h3 class="h">ExpenseTracker</h3>
+      <p class="body">Reads payment SMS from banks, GPay, PhonePe and Paytm, tags the location, and shows daily and monthly spend. Data stays on the phone.</p>
+      <div class="tags"><span>v1 on GitHub</span></div>
+    </div>
+    <div class="panel c2">
+      <div class="glimpse" style="background-image:url('img/soc.jpg')" aria-hidden="true"></div>
+      <span class="kicker">Web · Live</span>
+      <h3 class="h">SOC Alert Triage</h3>
+      <p class="body">Ingests raw SIEM and EDR alerts and returns structured triage reports: severity, MITRE ATT&amp;CK mapping, and extracted IOCs. Built to ease alert fatigue.</p>
+      <div class="tags"><span>React</span><span>Node.js</span><span>Claude API</span></div>
+      <div class="links">
+        <a class="link" href="https://soc-triage-client.vercel.app" target="_blank" rel="noopener">Open live</a>
+        <a class="link" href="https://github.com/Sa10Lynx/soc-triage" target="_blank" rel="noopener">Code</a>
+      </div>
+    </div>
+
+    <div class="panel dark tone c3">
+      <div class="glimpse" style="background-image:url('img/iotdos.jpg')" aria-hidden="true"></div>
+      <span class="kicker">Final-year project</span>
+      <h3 class="h">DoS Detection for IoT</h3>
+      <p class="body">A lightweight intrusion-detection pipeline for resource-constrained IoT devices. Benchmarked LightGBM, Random Forest and SVM on UNSW-NB15; LightGBM reached 99.3% detection accuracy at sub-10ms inference.</p>
+      <div class="tags"><span>LightGBM</span><span>UNSW-NB15</span><span>99.3% accuracy</span></div>
+      <div class="links"><a class="link" href="https://github.com/Sa10Lynx/Iot_DOS" target="_blank" rel="noopener">Code</a></div>
+    </div>
+    <div class="panel tone c3">
+      <div class="glimpse" style="background-image:url('img/cryptsca.jpg')" aria-hidden="true"></div>
+      <span class="kicker">Web · Live · 2024</span>
+      <h3 class="h">CryptSCA</h3>
+      <p class="body">A secure group chat where messages are never stored. Encryption (AES-256-GCM with PBKDF2 key derivation) runs in the browser through the Web Crypto API, with room-based access.</p>
+      <div class="tags"><span>AES-256-GCM</span><span>Socket.io</span><span>Web Crypto API</span></div>
+      <div class="links">
+        <a class="link" href="https://crypt-sca.vercel.app" target="_blank" rel="noopener">Open live</a>
+        <a class="link" href="https://github.com/Sa10Lynx/Crypt_SCA" target="_blank" rel="noopener">Code</a>
+      </div>
+    </div>
+    <div class="panel tone c3">
+      <span class="kicker">Hardware · Toy</span>
+      <h3 class="h">Dino Run on Glyph Matrix</h3>
+      <p class="body">A Dino Run game for the Nothing Phone 3's Glyph Matrix. Published on GitHub and submitted to Nothing Playground.</p>
+      <div class="links"><a class="link" href="https://github.com/Sa10Lynx" target="_blank" rel="noopener">GitHub</a></div>
+    </div>
+    <a class="panel dark tone biglink c3" href="resume-tanush-gupta.pdf" target="_blank" rel="noopener">
+      <span class="kicker">More projects and certifications</span><b>Resume ↗</b><span class="url">Opens the PDF in a new tab</span>
+    </a>
+
+  </div>
+  <div class="pagenav">
+    <button class="go prev" type="button" data-go="prev"><span aria-hidden="true">←</span><span>Back</span></button>
+    <button class="go next" type="button" data-go="next"><small lang="ja">つづく</small><span>Next chapter</span><span aria-hidden="true">→</span></button>
+  </div>
+</article>
+
+<!-- CHAPTER 4 -->
+<article class="page" id="ch4" aria-label="Chapter 4: Next Arc" hidden>
+  <div class="runhead"><span>Tanush Gupta · Ch.4 Next Arc</span><span>p. 4 / 5</span></div>
+  <div class="panels">
+    <header class="panel title tone c6">
+      <span class="ghost" aria-hidden="true">4</span>
+      <span class="kicker">Chapter 4 · <span lang="ja">第四話</span></span>
+      <h2>Next arc</h2>
+      <p class="sub">Everything so far is the prologue.</p>
+    </header>
+
+    <div class="panel slot has styled speed c4 r2" data-kind="hero">
+      <span class="cap">To be continued.</span>
+      <img src="img/hero-ch4.jpg" alt="Tanush looking out over a valley, drawn in black and white manga ink" style="object-position:62% 45%">
+    </div>
+    <div class="panel dark tone c2 r2">
+      <span class="kicker">Goal</span>
+      <h3 class="h">Go deep in AI and ML engineering.</h3>
+      <p class="body">Then stay deep in one domain.</p>
+    </div>
+
+    <div class="panel c3">
+      <span class="kicker">First boss</span>
+      <h3 class="h">Linear regression from scratch</h3>
+      <p class="body">Gradient descent, written by hand.</p>
+    </div>
+    <div class="panel dark tone c3">
+      <span class="kicker">Up next</span>
+      <h3 class="h">LTIMindtree</h3>
+      <p class="body">Onboarding date not announced yet.</p>
+    </div>
+  </div>
+  <div class="pagenav">
+    <button class="go prev" type="button" data-go="prev"><span aria-hidden="true">←</span><span>Back</span></button>
+    <button class="go next" type="button" data-go="next"><small lang="ja">つづく</small><span>Final chapter</span><span aria-hidden="true">→</span></button>
+  </div>
+</article>
+
+<!-- FINAL CHAPTER -->
+<article class="page" id="ch5" aria-label="Final chapter: Contact" hidden>
+  <div class="runhead"><span>Tanush Gupta · Final chapter</span><span>p. 5 / 5</span></div>
+  <div class="panels">
+    <header class="panel title dark tone c6">
+      <span class="ghost" aria-hidden="true">終</span>
+      <span class="kicker">Final chapter · <span lang="ja">最終話</span></span>
+      <h2>Say hello</h2>
+      <p class="sub">The next page is still blank.</p>
+    </header>
+
+    <div class="panel slot has styled speed c3 r3" data-kind="hero">
+      <span class="cap">Fin.</span>
+      <img src="img/hero-ch5.jpg" alt="Tanush with glasses, drawn in black and white manga ink" style="object-position:50% 30%">
+    </div>
+    <a class="panel dark tone biglink c3" href="https://github.com/Sa10Lynx" target="_blank" rel="noopener">
+      <span class="kicker">Code</span><b>GitHub</b><span class="url">github.com/Sa10Lynx</span>
+    </a>
+    <a class="panel dark tone biglink c3" href="https://www.linkedin.com/in/tanush-gupta-8766a7252" target="_blank" rel="noopener">
+      <span class="kicker">Work</span><b>LinkedIn</b><span class="url">linkedin.com/in/tanush-gupta</span>
+    </a>
+
+    <a class="panel dark tone biglink c3" href="resume-tanush-gupta.pdf" target="_blank" rel="noopener">
+      <span class="kicker">Everything on one page</span><b>Resume ↗</b><span class="url">Opens the PDF in a new tab</span>
+    </a>
+    <div class="panel c6">
+      <p class="narr">Thanks for reading. I'm based in Hyderabad, and I'm always up for a conversation about products, systems, and manga.</p>
+    </div>
+  </div>
+  <div class="pagenav">
+    <button class="go next" type="button" data-go="0"><small lang="ja">おわり</small><span>Read again</span><span aria-hidden="true">↺</span></button>
+  </div>
+</article>
+
+</main>
+
+<footer class="foot"><span>© 2026 Tanush Gupta</span><span>Read with arrow keys or the chapter buttons</span></footer>
+
+<script>
+(function () {
+  var pages = [].slice.call(document.querySelectorAll('.page'));
+  var tabs = [].slice.call(document.querySelectorAll('.tab'));
+  var cur = 0, busy = false;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function paint() {
+    tabs.forEach(function (t, k) {
+      if (k === cur) t.setAttribute('aria-current', 'page');
+      else t.removeAttribute('aria-current');
+    });
+  }
+
+  function show(i, instant) {
+    i = Math.max(0, Math.min(pages.length - 1, i));
+    if (i === cur || busy) return;
+    var from = pages[cur], to = pages[i], fwd = i > cur;
+    cur = i;
+    paint();
+    try { history.replaceState(null, '', '#ch' + (i + 1)); } catch (e) {}
+    window.scrollTo(0, 0);
+    if (instant || reduce || !from.animate) {
+      from.hidden = true;
+      to.hidden = false;
+      return;
+    }
+    busy = true;
+    to.hidden = false;
+    var finish = function (anim) {
+      if (anim) anim.cancel();
+      from.hidden = true;
+      from.style.zIndex = '';
+      to.style.zIndex = '';
+      busy = false;
+    };
+    var a;
+    if (fwd) {
+      from.style.zIndex = 2; to.style.zIndex = 1;
+      a = from.animate(
+        [{ transform: 'rotateY(0deg)', opacity: 1 }, { transform: 'rotateY(-82deg)', opacity: 0 }],
+        { duration: 420, easing: 'cubic-bezier(.55,.05,.75,.4)', fill: 'forwards' }
+      );
+    } else {
+      from.style.zIndex = 1; to.style.zIndex = 2;
+      a = to.animate(
+        [{ transform: 'rotateY(-82deg)', opacity: 0 }, { transform: 'rotateY(0deg)', opacity: 1 }],
+        { duration: 420, easing: 'cubic-bezier(.25,.6,.45,.95)' }
+      );
+    }
+    a.onfinish = function () { finish(fwd ? a : null); };
+  }
+
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('[data-go]') : null;
+    if (!b) return;
+    var v = b.getAttribute('data-go');
+    show(v === 'next' ? cur + 1 : v === 'prev' ? cur - 1 : parseInt(v, 10));
+  });
+
+  document.addEventListener('keydown', function (e) {
+    var t = e.target && e.target.tagName;
+    if (t === 'INPUT' || t === 'TEXTAREA') return;
+    if (e.key === 'ArrowRight') show(cur + 1);
+    else if (e.key === 'ArrowLeft') show(cur - 1);
+  });
+
+  [].forEach.call(document.querySelectorAll('.slot input'), function (inp) {
+    inp.addEventListener('change', function () {
+      var f = inp.files && inp.files[0];
+      if (!f) return;
+      var slot = inp.closest('.slot'), img = slot.querySelector('img');
+      if (img.dataset.url) { try { URL.revokeObjectURL(img.dataset.url); } catch (e) {} }
+      var u = URL.createObjectURL(f);
+      img.dataset.url = u;
+      img.src = u;
+      slot.classList.add('has');
+    });
+  });
+
+  var m = /^#ch([1-5])$/.exec(window.location.hash || '');
+  if (m) show(parseInt(m[1], 10) - 1, true);
+})();
+</script>
+</body>
+</html>
