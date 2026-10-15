@@ -2,7 +2,7 @@
 
 A static site. No build step, no dependencies.
 
-- `index.html` holds all five pages (four chapters and the final page).
+- `index.html` holds four pages (three chapters and the final page; Chapter 4 "Next Arc" is commented out in the HTML).
 - `img/` holds the stylized photos and project screenshots.
 - `resume-tanush-gupta.pdf` is the file the Resume buttons open.
 - `og.png` is the link-preview image (needs the live address, see below).
